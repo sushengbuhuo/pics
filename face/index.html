@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="./static/css/muse-ui.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <title>Gif Generator</title>
+</head>
+
+<body>
+  <div id="app">
+    <mu-appbar title="Gif Generator">
+      <mu-icon-button icon="menu" slot="left" @click="toggle(true)"></mu-icon-button>
+    </mu-appbar>
+    <mu-drawer :open="open" :docked="false" @close="toggle()">
+      <mu-list>
+        <mu-list-item 
+          v-for="(title, i) in titles"
+          :key="i"
+          :title="title.name"
+          @click="change(title.url);toggle()">
+        </mu-list-item>
+      </mu-list>
+    </mu-drawer>
+    <div id="content">
+      <mu-flexbox justify="center">
+        <mu-card>
+          <mu-card-media>
+            <img id="source" :src="img.osrc ? img.osrc : './static/img/weisuoyuwei.gif'" alt="gif" style="display: none">
+            <img :src="img.src ? img.src : './static/img/weisuoyuwei.gif'" alt="gif">
+            <mu-linear-progress v-if="progress.seen" mode="determinate" :value="progress.value"></mu-linear-progress>
+          </mu-card-media>
+          <mu-card-actions>
+            <mu-flat-button label="下载" class="demo-flat-button" icon="file_download" @click="download()"></mu-flat-button>
+          </mu-card-actions>
+        </mu-card>
+      </mu-flexbox>
+      <mu-flexbox wrap="wrap" justify="center">
+        <mu-text-field v-for="(hint, i) in hints" :key="i" :label="'第 ' + (i+1) + ' 句'" :hint-text="hint.text" v-model="hint.text">
+        </mu-text-field>
+      </mu-flexbox>
+      <mu-flexbox orient="vertical" justify="center">
+        <mu-raised-button label="生成" @click="genGif()" :disabled="button.disabled" primary></mu-raised-button>
+      </mu-flexbox>
+    </div>
+    </mu-flexbox>
+  </div>
+  <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+  <script src="./static/js/muse-ui.js"></script>
+  <script src="./static/js/gif.js"></script>
+  <script src="./static/js/gif.worker.js"></script>
+  <script src="./static/js/gifuct-js.min.js"></script>
+  <!-- <script src="./static/js/index.js"></script> -->
+  <script src="./static/js/index.min.js"></script>
+</body>
+
+</html>
